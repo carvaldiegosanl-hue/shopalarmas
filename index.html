@@ -1,0 +1,608 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ShopAlarmas | Seguridad Profesional en Colombia</title>
+<link rel="icon" href="logo.png" type="image/png">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#f2f4f6",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface-variant": "#44474d",
+                      "surface": "#f7f9fb",
+                      "on-surface": "#191c1e",
+                      "outline-variant": "#c5c6cd",
+                      "brand-red": "#EF233C",
+                      "brand-navy": "#0d1c32",
+                      "brand-cyan": "#50d9fe"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-desktop": "48px",
+                      "margin-mobile": "16px",
+                      "container-max": "1280px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .security-card-shadow {
+            box-shadow: 0 4px 20px rgba(13, 28, 50, 0.04);
+            transition: all .25s ease;
+        }
+        .security-card-shadow:hover {
+            box-shadow: 0 10px 30px rgba(13, 28, 50, 0.08);
+            transform: translateY(-4px);
+        }
+        .gradient-mesh {
+            background: radial-gradient(at 0% 0%, rgba(80, 217, 254, 0.12) 0%, transparent 50%),
+                        radial-gradient(at 100% 100%, rgba(239, 35, 60, 0.06) 0%, transparent 50%);
+        }
+        @keyframes pulse-wa {
+            0% { box-shadow: 0 0 0 0 rgba(37,211,102,.6); }
+            70% { box-shadow: 0 0 0 14px rgba(37,211,102,0); }
+            100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+        }
+        .wa-pulse { animation: pulse-wa 2.2s infinite; }
+
+        @keyframes toast-in {
+            from { opacity: 0; transform: translate(-50%, 20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+        @keyframes toast-out {
+            from { opacity: 1; transform: translate(-50%, 0); }
+            to { opacity: 0; transform: translate(-50%, 20px); }
+        }
+        #form-toast.show { animation: toast-in .3s ease forwards; }
+        #form-toast.hide { animation: toast-out .3s ease forwards; }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface selection:bg-brand-cyan/30">
+
+<!-- Toast de confirmación de envío -->
+<div id="form-toast" class="hidden fixed bottom-8 left-1/2 z-[200] bg-brand-navy text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 max-w-[90vw]">
+<span class="material-symbols-outlined text-brand-cyan">check_circle</span>
+<span class="font-body-md text-sm">¡Solicitud enviada! Te contactaremos pronto por WhatsApp.</span>
+</div>
+
+<!-- WhatsApp Floating Action Button -->
+<a class="fixed bottom-8 right-8 z-[100] bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center duration-300 group wa-pulse"
+   href="https://wa.me/573148319544?text=Hola%20ShopAlarmas,%20quiero%20informaci%C3%B3n%20sobre%20sus%20sistemas%20de%20seguridad" target="_blank" aria-label="WhatsApp">
+<svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.891 11.893-11.891 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.412 0 6.556-5.332 11.891-11.893 11.891-2.01 0-3.98-.511-5.718-1.483l-6.275 1.692zm5.914-4.839c1.477.876 3.033 1.338 4.632 1.338 5.103 0 9.255-4.154 9.255-9.259 0-2.479-.964-4.81-2.714-6.562-1.751-1.752-4.082-2.716-6.561-2.716-5.107 0-9.259 4.154-9.259 9.259 0 1.688.455 3.337 1.316 4.787l-.859 3.136 3.2-.863zm10.742-6.563c-.3-.15-1.774-.875-2.048-.976-.276-.1-.476-.15-.676.15-.2.3-.775.976-.95 1.176-.175.2-.35.225-.65.075-.3-.15-1.266-.467-2.411-1.486-.893-.797-1.495-1.782-1.67-2.083-.175-.3-.018-.463.13-.611.134-.132.3-.35.45-.525.15-.175.2-.3.3-.5.1-.2.05-.375-.025-.525-.075-.15-.676-1.625-.926-2.226-.243-.585-.49-.505-.676-.514-.175-.009-.375-.011-.575-.011-.2 0-.525.075-.8.376-.275.301-1.05 1.026-1.05 2.503s1.075 2.903 1.225 3.103c.15.2 2.116 3.23 5.126 4.529.715.309 1.273.494 1.708.633.719.228 1.373.196 1.89.119.576-.086 1.774-.726 2.024-1.426.25-.7.25-1.301.175-1.426-.075-.125-.275-.2-.575-.35z"></path></svg>
+<span class="absolute right-full mr-4 bg-white text-on-surface px-3 py-1 rounded text-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">Habla con un asesor</span>
+</a>
+
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface-container-lowest flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto shadow-sm transition-all duration-200 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<img src="logo.png" alt="ShopAlarmas Logo" class="h-10 w-auto object-contain">
+<span class="font-headline-md text-headline-md font-bold text-brand-navy">ShopAlarmas</span>
+</div>
+<div class="hidden md:flex items-center gap-gutter">
+<a class="font-body-md text-on-surface-variant hover:text-brand-red transition-colors" href="#productos">Productos</a>
+<a class="font-body-md text-on-surface-variant hover:text-brand-red transition-colors" href="#proceso">Instalación</a>
+<a class="font-body-md text-on-surface-variant hover:text-brand-red transition-colors" href="#envios">Envíos</a>
+<a class="font-body-md text-on-surface-variant hover:text-brand-red transition-colors" href="#contacto">Contacto</a>
+</div>
+<div class="flex items-center gap-3">
+<!-- Redes sociales -->
+<div class="hidden sm:flex items-center gap-2">
+<a class="w-9 h-9 rounded-full bg-brand-navy/5 flex items-center justify-center text-brand-navy hover:bg-brand-red hover:text-white transition-all" href="https://www.facebook.com/SHOPALARMA/?locale=es_LA" target="_blank" aria-label="Facebook">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="w-9 h-9 rounded-full bg-brand-navy/5 flex items-center justify-center text-brand-navy hover:bg-brand-red hover:text-white transition-all" href="https://instagram.com/SHOPALARMAS" target="_blank" aria-label="Instagram">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+<a class="w-9 h-9 rounded-full bg-brand-navy/5 flex items-center justify-center text-brand-navy hover:bg-brand-red hover:text-white transition-all" href="https://youtube.com/@SHOPALARMAS" target="_blank" aria-label="YouTube">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"></path></svg>
+</a>
+</div>
+<a class="hidden sm:flex bg-brand-red text-white font-label-md text-label-md px-6 py-3 rounded-lg hover:opacity-90 active:scale-95 transition-all uppercase tracking-wider"
+   href="https://wa.me/573148319544?text=Hola%20ShopAlarmas,%20necesito%20una%20cotizaci%C3%B3n%20urgente" target="_blank">
+                Cotización Emergencia
+            </a>
+<button id="mobile-menu-btn" class="md:hidden text-brand-navy" aria-label="Abrir menú" aria-expanded="false">
+<span class="material-symbols-outlined" id="mobile-menu-icon">menu</span>
+</button>
+</div>
+</nav>
+
+<!-- Mobile Menu Panel -->
+<div id="mobile-menu" class="hidden fixed top-[72px] left-0 right-0 z-40 bg-white border-b border-outline-variant shadow-lg md:hidden">
+<div class="flex flex-col px-margin-mobile py-4 gap-4">
+<a class="font-body-md text-on-surface-variant hover:text-brand-red transition-colors py-2" href="#productos">Productos</a>
+<a class="font-body-md text-on-surface-variant hover:text-brand-red transition-colors py-2" href="#proceso">Instalación</a>
+<a class="font-body-md text-on-surface-variant hover:text-brand-red transition-colors py-2" href="#envios">Envíos</a>
+<a class="font-body-md text-on-surface-variant hover:text-brand-red transition-colors py-2" href="#contacto">Contacto</a>
+<a class="bg-brand-red text-white font-label-md text-label-md px-6 py-3 rounded-lg hover:opacity-90 active:scale-95 transition-all uppercase tracking-wider text-center"
+   href="https://wa.me/573148319544?text=Hola%20ShopAlarmas,%20necesito%20una%20cotizaci%C3%B3n%20urgente" target="_blank">
+                Cotización Emergencia
+            </a>
+<div class="flex items-center gap-3 justify-center pt-2">
+<a class="w-9 h-9 rounded-full bg-brand-navy/5 flex items-center justify-center text-brand-navy hover:bg-brand-red hover:text-white transition-all" href="https://www.facebook.com/SHOPALARMA/?locale=es_LA" target="_blank" aria-label="Facebook">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="w-9 h-9 rounded-full bg-brand-navy/5 flex items-center justify-center text-brand-navy hover:bg-brand-red hover:text-white transition-all" href="https://instagram.com/SHOPALARMAS" target="_blank" aria-label="Instagram">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+<a class="w-9 h-9 rounded-full bg-brand-navy/5 flex items-center justify-center text-brand-navy hover:bg-brand-red hover:text-white transition-all" href="https://youtube.com/@SHOPALARMAS" target="_blank" aria-label="YouTube">
+<svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+
+<!-- Hero Section -->
+<header class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden gradient-mesh">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-2 items-center gap-12">
+<div class="z-10 text-center md:text-left">
+<div class="inline-flex items-center gap-2 bg-brand-navy/5 text-brand-navy px-4 py-1.5 rounded-full mb-6">
+<span class="material-symbols-outlined text-brand-red" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-label-md text-label-sm uppercase tracking-widest">Protección Profesional</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-brand-navy mb-6 leading-tight">
+                    Protege lo que más importa con <span class="text-brand-red">ShopAlarmas</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 max-w-xl">
+                    Sistemas de seguridad avanzada para hogares, negocios y vehículos en toda Colombia. Tecnología de punta al alcance de tu mano.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+<a class="bg-brand-red text-white font-label-md text-body-md px-8 py-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-brand-red/20 active:scale-95" href="#productos">
+                        Ver Productos
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+<a class="border-2 border-brand-cyan text-brand-navy font-label-md text-body-md px-8 py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-brand-cyan/5 transition-all active:scale-95"
+   href="https://wa.me/573148319544?text=Hola%20ShopAlarmas,%20quiero%20una%20asesor%C3%ADa" target="_blank">
+                        Solicitar Asesoría
+                    </a>
+</div>
+</div>
+<div class="relative order-first md:order-last">
+<div class="absolute -inset-4 bg-brand-cyan/10 rounded-full blur-3xl -z-10 animate-pulse"></div>
+<!-- Imagen de cámara instalada en fachada -->
+<img src="img_hogar_ai.png" alt="Cámara de seguridad ShopAlarmas instalada en una fachada" class="w-full h-auto rounded-2xl drop-shadow-2xl transform md:rotate-1 transition-transform hover:rotate-0 duration-500 object-cover">
+</div>
+</div>
+</header>
+
+<!-- Trust Bar -->
+<section class="bg-brand-navy py-12">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-wrap justify-between items-center gap-8">
+<div class="flex items-center gap-2 text-white/80 hover:text-white transition-all cursor-default">
+<span class="material-symbols-outlined text-4xl">verified_user</span>
+<span class="font-label-md uppercase tracking-widest text-sm">Empresa Certificada</span>
+</div>
+<div class="flex items-center gap-2 text-white/80 hover:text-white transition-all cursor-default">
+<span class="material-symbols-outlined text-4xl">local_police</span>
+<span class="font-label-md uppercase tracking-widest text-sm">Aliado Estratégico</span>
+</div>
+<div class="flex items-center gap-2 text-white/80 hover:text-white transition-all cursor-default">
+<span class="material-symbols-outlined text-4xl">support_agent</span>
+<span class="font-label-md uppercase tracking-widest text-sm">Soporte 24/7</span>
+</div>
+<div class="flex items-center gap-2 text-white/80 hover:text-white transition-all cursor-default">
+<span class="material-symbols-outlined text-4xl">public</span>
+<span class="font-label-md uppercase tracking-widest text-sm">Cobertura Nacional</span>
+</div>
+</div>
+</section>
+
+<!-- Products/Services Section -->
+<section class="py-24 bg-white" id="productos">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16">
+<div class="inline-block bg-brand-cyan/20 text-brand-navy px-4 py-1 rounded-full text-sm font-bold mb-4">NUESTROS SERVICIOS</div>
+<h2 class="font-headline-lg text-headline-lg text-brand-navy mb-4">Nuestras Soluciones de Seguridad</h2>
+<div class="w-20 h-1 bg-brand-red mx-auto"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+
+<!-- Card 1: Cámaras -->
+<div class="bg-white rounded-2xl security-card-shadow p-8 flex flex-col border border-outline-variant/30 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
+<div class="w-16 h-16 rounded-xl overflow-hidden mb-6 shadow-md">
+<img src="icon_camaras.png" alt="Ícono cámaras de seguridad" class="w-full h-full object-cover">
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Cámaras de Seguridad</h3>
+<p class="text-on-surface-variant mb-6">Sistemas CCTV de alta definición con visión nocturna y acceso remoto desde cualquier dispositivo.</p>
+<a class="mt-auto text-brand-navy font-bold flex items-center gap-1 group" href="https://wa.me/573148319544?text=Quiero%20informaci%C3%B3n%20de%20c%C3%A1maras" target="_blank">
+                        Explorar cámaras
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">chevron_right</span>
+</a>
+</div>
+
+<!-- Card 2: Alarmas -->
+<div class="bg-white rounded-2xl security-card-shadow p-8 flex flex-col border border-outline-variant/30 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
+<div class="w-16 h-16 rounded-xl overflow-hidden mb-6 shadow-md">
+<img src="icon_bell.png" alt="Ícono sistemas de alarma" class="w-full h-full object-cover">
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Sistemas de Alarma</h3>
+<p class="text-on-surface-variant mb-6">Alarmas inteligentes para hogar y oficina con sensores de movimiento y apertura de puertas.</p>
+<a class="mt-auto text-brand-navy font-bold flex items-center gap-1 group" href="https://wa.me/573148319544?text=Quiero%20informaci%C3%B3n%20de%20alarmas" target="_blank">
+                        Ver alarmas
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">chevron_right</span>
+</a>
+</div>
+
+<!-- Card 3: GPS -->
+<div class="bg-white rounded-2xl security-card-shadow p-8 flex flex-col border border-outline-variant/30 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
+<div class="w-16 h-16 rounded-xl overflow-hidden mb-6 shadow-md">
+<img src="icon_gps.png" alt="Ícono GPS para motos y vehículos" class="w-full h-full object-cover">
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">GPS para Motos y Vehículos</h3>
+<p class="text-on-surface-variant mb-6">Rastreo en tiempo real para motos, carros y flotas comerciales con apagado remoto.</p>
+<a class="mt-auto text-brand-navy font-bold flex items-center gap-1 group" href="https://wa.me/573148319544?text=Quiero%20informaci%C3%B3n%20de%20GPS" target="_blank">
+                        Rastrear ahora
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">chevron_right</span>
+</a>
+</div>
+
+<!-- Card 4: Autocontrol desde la App -->
+<div class="text-white rounded-2xl security-card-shadow p-8 flex flex-col hover:-translate-y-2 hover:shadow-xl transition-all duration-300" style="background: linear-gradient(135deg, #0d1c32 0%, #1f3a66 100%);">
+<div class="w-16 h-16 rounded-xl overflow-hidden mb-6 shadow-md">
+<img src="icon_app.png" alt="Ícono control total desde tu celular" class="w-full h-full object-cover">
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Control Total desde tu Celular</h3>
+<p class="text-white/70 mb-6">Tú decides quién vigila: recibe notificaciones, video en vivo y alertas en tiempo real directamente en tu app, sin intermediarios.</p>
+<a class="mt-auto text-brand-cyan font-bold flex items-center gap-1 group" href="https://wa.me/573148319544?text=Quiero%20informaci%C3%B3n%20sobre%20el%20control%20desde%20mi%20celular" target="_blank">
+                        Más información
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">chevron_right</span>
+</a>
+</div>
+
+<!-- Card 5: Instalación -->
+<div class="bg-white rounded-2xl security-card-shadow p-8 flex flex-col border border-outline-variant/30 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
+<div class="w-full mb-6 overflow-hidden rounded-xl bg-brand-navy/5" style="height:160px;">
+<img src="img_instalacion_ai.png" alt="Técnico de ShopAlarmas instalando una cámara de seguridad" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Instalación Profesional</h3>
+<p class="text-on-surface-variant mb-6">Técnicos expertos garantizan que tu sistema quede configurado correctamente y sin cables a la vista.</p>
+<a class="mt-auto text-brand-navy font-bold flex items-center gap-1 group" href="https://wa.me/573148319544?text=Quiero%20agendar%20una%20instalaci%C3%B3n" target="_blank">
+                        Agendar cita
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">chevron_right</span>
+</a>
+</div>
+
+<!-- Card 6: Soporte -->
+<div class="bg-white rounded-2xl security-card-shadow p-8 flex flex-col border border-outline-variant/30 hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
+<div class="w-16 h-16 rounded-xl overflow-hidden mb-6 shadow-md">
+<img src="icon_soporte.png" alt="Ícono soporte técnico" class="w-full h-full object-cover">
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Soporte Técnico</h3>
+<p class="text-on-surface-variant mb-6">Resolución de dudas y mantenimiento preventivo para que tu seguridad nunca falle.</p>
+<a class="mt-auto text-brand-navy font-bold flex items-center gap-1 group" href="https://wa.me/573148319544?text=Necesito%20soporte%20t%C3%A9cnico" target="_blank">
+                        Contactar soporte
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">chevron_right</span>
+</a>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- Process Section -->
+<section class="py-24 bg-surface-container-low overflow-hidden" id="proceso">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg text-brand-navy mb-4">¿Cómo trabajamos?</h2>
+<p class="text-on-surface-variant">Protección en cuatro sencillos pasos</p>
+</div>
+<div class="relative grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="hidden md:block absolute top-1/4 left-0 right-0 h-0.5 border-t-2 border-dotted border-brand-cyan -z-0"></div>
+<div class="relative z-10 text-center group">
+<div class="relative w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 group-hover:shadow-brand-cyan/40 transition-all duration-300" style="background: linear-gradient(135deg, #0d1c32 0%, #1f3a66 100%);">
+<span class="material-symbols-outlined text-brand-cyan text-4xl" style="font-variation-settings: 'FILL' 1;">chat</span>
+<span class="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-brand-red text-white text-xs font-bold flex items-center justify-center border-2 border-white shadow">1</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-2">Asesoría</h4>
+<p class="text-on-surface-variant text-sm">Evaluamos tus necesidades específicas de seguridad.</p>
+</div>
+<div class="relative z-10 text-center group">
+<div class="relative w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 group-hover:shadow-brand-cyan/40 transition-all duration-300" style="background: linear-gradient(135deg, #0d1c32 0%, #1f3a66 100%);">
+<span class="material-symbols-outlined text-brand-cyan text-4xl" style="font-variation-settings: 'FILL' 1;">request_quote</span>
+<span class="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-brand-red text-white text-xs font-bold flex items-center justify-center border-2 border-white shadow">2</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-2">Cotización</h4>
+<p class="text-on-surface-variant text-sm">Presentamos la mejor solución ajustada a tu presupuesto.</p>
+</div>
+<div class="relative z-10 text-center group">
+<div class="relative w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 group-hover:shadow-brand-cyan/40 transition-all duration-300" style="background: linear-gradient(135deg, #0d1c32 0%, #1f3a66 100%);">
+<span class="material-symbols-outlined text-brand-cyan text-4xl" style="font-variation-settings: 'FILL' 1;">engineering</span>
+<span class="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-brand-red text-white text-xs font-bold flex items-center justify-center border-2 border-white shadow">3</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-2">Instalación</h4>
+<p class="text-on-surface-variant text-sm">Configuración rápida y limpia por técnicos expertos.</p>
+</div>
+<div class="relative z-10 text-center group">
+<div class="relative w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 group-hover:shadow-brand-red/40 transition-all duration-300" style="background: linear-gradient(135deg, #EF233C 0%, #b3122a 100%);">
+<span class="material-symbols-outlined text-white text-4xl" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-brand-navy text-white text-xs font-bold flex items-center justify-center border-2 border-white shadow">4</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-2">Protección 24/7</h4>
+<p class="text-on-surface-variant text-sm">Relájate, nosotros cuidamos de ti y de lo tuyo.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Video & Demo Section -->
+<section class="py-24 bg-brand-navy text-white relative overflow-hidden">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div>
+<h2 class="font-display-lg text-display-lg mb-6">Tu tranquilidad, nuestra prioridad técnica</h2>
+<p class="text-white/70 text-body-lg mb-8">Observa cómo operan nuestros sistemas de última generación. En este video de demostración verás la claridad de nuestras cámaras y la rapidez de respuesta de nuestras alarmas.</p>
+<ul class="space-y-4">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-brand-cyan">check_circle</span>
+<span>Resolución 4K para identificación precisa</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-brand-cyan">check_circle</span>
+<span>Notificaciones en tiempo real al celular</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-brand-cyan">check_circle</span>
+<span>Respaldo de energía ante cortes eléctricos</span>
+</li>
+</ul>
+</div>
+<div class="relative aspect-video bg-white/5 rounded-2xl overflow-hidden border border-white/10">
+<video class="absolute inset-0 w-full h-full object-cover" controls preload="metadata" poster="img_demo_ai.png">
+<source src="SHOPALARMAS.mp4" type="video/mp4">
+Tu navegador no soporta la reproducción de video.
+</video>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Shipping Section -->
+<section class="py-20 bg-white" id="envios">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="bg-surface rounded-3xl p-8 md:p-16 flex flex-col md:flex-row items-center gap-12 border border-outline-variant/50">
+<div class="flex-1">
+<div class="inline-block bg-brand-cyan/20 text-brand-navy px-4 py-1 rounded-full text-sm font-bold mb-4">COBERTURA NACIONAL</div>
+<h2 class="font-headline-lg text-headline-lg text-brand-navy mb-4">Envíos a toda Colombia</h2>
+<p class="text-on-surface-variant text-body-lg">Llegamos a cada rincón del país, sin importar la ciudad o región. Garantizamos que tu equipo de seguridad llegue en perfecto estado y a tiempo, a cualquier lugar de Colombia.</p>
+<div class="mt-8 flex items-center gap-4">
+<div class="bg-white p-4 rounded-xl shadow-sm border border-outline-variant/30">
+<p class="text-2xl font-bold text-brand-navy">24-48h</p>
+<p class="text-xs uppercase text-on-surface-variant">Entrega promedio</p>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-sm border border-outline-variant/30">
+<p class="text-2xl font-bold text-brand-navy">100%</p>
+<p class="text-xs uppercase text-on-surface-variant">Asegurado</p>
+</div>
+</div>
+</div>
+<div class="flex-1 w-full max-w-md">
+<!-- Google Maps - Colombia -->
+<div class="relative w-full rounded-2xl overflow-hidden shadow-lg border border-outline-variant/30" style="aspect-ratio:1/1;">
+<iframe class="absolute inset-0 w-full h-full" src="https://maps.google.com/maps?q=Colombia&z=5&output=embed" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa de cobertura ShopAlarmas en Colombia"></iframe>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="py-24 bg-surface" id="contacto">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-16">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-brand-navy mb-6">¿Tienes dudas?</h2>
+<p class="text-on-surface-variant mb-8">Déjanos tus datos y un experto en seguridad se pondrá en contacto contigo en menos de 24 horas para brindarte una asesoría personalizada sin compromiso.</p>
+<div class="space-y-6">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-brand-cyan/10 flex items-center justify-center flex-shrink-0 text-brand-navy">
+<span class="material-symbols-outlined">call</span>
+</div>
+<div>
+<p class="font-bold">WhatsApp / Línea de Atención</p>
+<p class="text-on-surface-variant">+57 314 831 9544</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-brand-cyan/10 flex items-center justify-center flex-shrink-0 text-brand-navy">
+<span class="material-symbols-outlined">mail</span>
+</div>
+<div>
+<p class="font-bold">Email</p>
+<p class="text-on-surface-variant">shopalarmas@gmail.com</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl p-8 shadow-xl border border-outline-variant/30">
+<form id="contact-form" class="space-y-6" action="https://formspree.io/f/mzblroje" method="POST" onsubmit="return enviarFormulario(event)">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-medium mb-2 text-on-surface-variant">Nombre Completo</label>
+<input required class="w-full bg-surface border-outline-variant rounded-xl focus:ring-brand-cyan focus:border-brand-cyan py-3" placeholder="Ej. Juan Pérez" type="text" id="cf-nombre" name="nombre">
+</div>
+<div>
+<label class="block text-sm font-medium mb-2 text-on-surface-variant">Correo Electrónico</label>
+<input required class="w-full bg-surface border-outline-variant rounded-xl focus:ring-brand-cyan focus:border-brand-cyan py-3" placeholder="juan@email.com" type="email" id="cf-email" name="email">
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium mb-2 text-on-surface-variant">Teléfono de Contacto</label>
+<input required class="w-full bg-surface border-outline-variant rounded-xl focus:ring-brand-cyan focus:border-brand-cyan py-3" placeholder="+57 321 000 0000" type="tel" id="cf-telefono" name="telefono">
+</div>
+<div>
+<label class="block text-sm font-medium mb-2 text-on-surface-variant">Mensaje o Requerimiento</label>
+<textarea class="w-full bg-surface border-outline-variant rounded-xl focus:ring-brand-cyan focus:border-brand-cyan py-3" placeholder="Cuéntanos qué necesitas proteger..." rows="4" id="cf-mensaje" name="mensaje"></textarea>
+</div>
+<button id="cf-submit-btn" class="w-full bg-brand-red text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-brand-red/20" type="submit">
+                        Enviar Solicitud
+                    </button>
+<p class="text-center text-xs text-on-surface-variant">Al enviar, recibiremos tu solicitud y te contactaremos pronto.</p>
+</form>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-brand-navy text-white pt-20 pb-10">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+<div>
+<div class="flex items-center gap-3 mb-6">
+<img src="logo.png" alt="ShopAlarmas Logo" class="h-10 w-auto object-contain">
+</div>
+<p class="text-white/60 text-sm leading-relaxed">Expertos en seguridad electrónica. Brindamos tranquilidad a través de soluciones tecnológicas confiables en todo el territorio colombiano.</p>
+</div>
+<div>
+<h5 class="font-bold mb-6 text-brand-cyan uppercase text-sm tracking-widest">Productos</h5>
+<ul class="space-y-3 text-white/70 text-sm">
+<li><a class="hover:text-white transition-colors" href="#productos">Cámaras IP</a></li>
+<li><a class="hover:text-white transition-colors" href="#productos">Alarmas Residenciales</a></li>
+<li><a class="hover:text-white transition-colors" href="#productos">GPS Vehicular</a></li>
+<li><a class="hover:text-white transition-colors" href="#productos">Control desde la App</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold mb-6 text-brand-cyan uppercase text-sm tracking-widest">Empresa</h5>
+<ul class="space-y-3 text-white/70 text-sm">
+<li><a class="hover:text-white transition-colors" href="#proceso">¿Cómo trabajamos?</a></li>
+<li><a class="hover:text-white transition-colors" href="#envios">Envíos</a></li>
+<li><a class="hover:text-white transition-colors" href="#contacto">Contacto</a></li>
+<li><a class="hover:text-white transition-colors" href="https://wa.me/573148319544" target="_blank">Soporte WhatsApp</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold mb-6 text-brand-cyan uppercase text-sm tracking-widest">Síguenos</h5>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red transition-all" href="https://www.facebook.com/SHOPALARMA/?locale=es_LA" target="_blank" aria-label="Facebook">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red transition-all" href="https://instagram.com/SHOPALARMAS" target="_blank" aria-label="Instagram">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand-red transition-all" href="https://youtube.com/@SHOPALARMAS" target="_blank" aria-label="YouTube">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"></path></svg>
+</a>
+</div>
+</div>
+</div>
+<div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-white/50 text-sm text-center md:text-left">
+<p>© <span id="current-year">2026</span> ShopAlarmas. Todos los derechos reservados.</p>
+<p>Hecho con <span class="text-brand-red">&hearts;</span> en Colombia</p>
+</div>
+</div>
+</footer>
+
+<script>
+    // Menú móvil
+    (function () {
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('mobile-menu-icon');
+
+        menuBtn.addEventListener('click', () => {
+            const isHidden = menu.classList.toggle('hidden');
+            menuIcon.textContent = isHidden ? 'menu' : 'close';
+            menuBtn.setAttribute('aria-expanded', String(!isHidden));
+        });
+
+        menu.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+                menuIcon.textContent = 'menu';
+                menuBtn.setAttribute('aria-expanded', 'false');
+            });
+        });
+    })();
+
+    // Año actual en el footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Toast de confirmación
+    const toast = document.getElementById('form-toast');
+    let toastTimeout;
+    function mostrarToast(mensaje, esError = false) {
+        const icono = toast.querySelector('.material-symbols-outlined');
+        const texto = toast.querySelector('span:last-child');
+        icono.textContent = esError ? 'error' : 'check_circle';
+        icono.classList.toggle('text-brand-cyan', !esError);
+        icono.classList.toggle('text-brand-red', esError);
+        texto.textContent = mensaje;
+
+        toast.classList.remove('hidden', 'hide');
+        toast.classList.add('show');
+
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+            toast.classList.add('hide');
+            setTimeout(() => toast.classList.add('hidden'), 300);
+        }, 4000);
+    }
+
+    // Envío del formulario de contacto vía AJAX a Formspree
+    async function enviarFormulario(event) {
+        event.preventDefault();
+        const form = event.target;
+        const btn = document.getElementById('cf-submit-btn');
+        const textoOriginal = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Enviando...';
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { Accept: 'application/json' },
+            });
+
+            if (response.ok) {
+                mostrarToast('¡Solicitud enviada! Te contactaremos pronto por WhatsApp.');
+                form.reset();
+            } else {
+                mostrarToast('No se pudo enviar. Escríbenos por WhatsApp.', true);
+            }
+        } catch (error) {
+            mostrarToast('Error de conexión. Escríbenos por WhatsApp.', true);
+        } finally {
+            btn.disabled = false;
+            btn.textContent = textoOriginal;
+        }
+
+        return false;
+    }
+</script>
+</body>
+</html>
